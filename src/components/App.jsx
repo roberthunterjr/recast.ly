@@ -1,32 +1,34 @@
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { videos : window.exampleVideoData,
-                  current : window.exampleVideoData[0]};
+    this.state = {videos : window.exampleVideoData, current : window.exampleVideoData[0]};
   }
 
- changeCurrent(video) {
-  //  console.log('state changed to', video);
-   //Currently console logging event. Didn't pass parameters into clickHandlefunciton. Investigate binding
-   this.setState({current : video});
- }
+  changeCurrent(video) {
+    this.setState({current : video});
+  }
 
- changeVideos(videos) {
-   this.setState({
-     videos
-   });
- }
+  changeVideos(videos) {
+    this.setState({videos});
+  }
 
- fetchVideos(query) {
-   var options = {
-     query: query,
-     max: 5,
-     key: window.YOUTUBE_API_KEY
-   };
-   console.log(options);
-   window.searchYouTube.call(this,options, this.changeVideos.bind(this));
- }
+  fetchVideos(query) {
+    var options = {
+      query,
+      max: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+    console.log(options);
+    window.searchYouTube.call(this, options, this.changeVideos.bind(this));
+  }
 
+  componentDidMount() {
+    var q = 'angular';
+    console.log(q);
+  //  this.state = {videos : {}, current : {};};
+    this.fetchVideos.call(this, q);
+    this.setState({current : this.state.videos[0]});
+  }
 
   render () {
     return (
