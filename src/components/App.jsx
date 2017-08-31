@@ -5,18 +5,35 @@ class App extends React.Component {
                   current : window.exampleVideoData[0]};
   }
 
- clickHandler(video) {
-   console.log('state changed to', video);
+ changeCurrent(video) {
+  //  console.log('state changed to', video);
    //Currently console logging event. Didn't pass parameters into clickHandlefunciton. Investigate binding
    this.setState({current : video});
  }
+
+ changeVideos(videos) {
+   this.setState({
+     videos
+   });
+ }
+
+ fetchVideos(query) {
+   var options = {
+     query: query,
+     max: 5,
+     key: window.YOUTUBE_API_KEY
+   };
+   console.log(options);
+   window.searchYouTube.call(this,options, this.changeVideos.bind(this));
+ }
+
 
   render () {
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <Search fetchVideos = {this.fetchVideos.bind(this)} />
           </div>
         </nav>
         <div className="row">
@@ -24,7 +41,7 @@ class App extends React.Component {
             <VideoPlayer video={this.state.current} />
           </div>
           <div className="col-md-5">
-            <VideoList videos={this.state.videos} clickHandle={this.clickHandler.bind(this)} />
+            <VideoList videos={this.state.videos} changeCurrent={this.changeCurrent.bind(this)} />
           </div>
         </div>
       </div>
